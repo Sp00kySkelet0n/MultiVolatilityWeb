@@ -1,0 +1,11 @@
+FROM python:3.12
+
+RUN apt update -y && \
+    apt install -y cmake graphviz libgraphviz-dev pkg-config && \
+    pip install streamlit pygraphviz streamlit-navigation-bar streamlit-aggrid
+
+COPY ./src-frontend /code
+
+WORKDIR /code
+
+ENTRYPOINT ["streamlit","run","app.py","--server.address","0.0.0.0"]

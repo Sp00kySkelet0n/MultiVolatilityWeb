@@ -1,0 +1,40 @@
+services:
+  multivol-backend:
+    restart: always
+    build:
+      dockerfile: Dockerfile-backend
+    env_file: .env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.multivol-back.rule=Host(`multivol-backend.spook64.fr`)"
+      - "traefik.http.routers.multivol-back.tls=true"
+      - "traefik.http.routers.multivol-back.tls.certresolver=myresolver"
+      - "traefik.http.services.multivol-back.loadbalancer.server.scheme=http"
+      - "traefik.http.services.multivol-back.loadbalancer.server.port=8000"
+      - "traefik.http.routers.multivol-back.entrypoints=websecure"
+    volumes:
+      - ./shared_volume:/shared_volume
+    networks:
+      - traefik
+
+  multivol-frontend:
+    restart: always
+    volumes:
+      - ./shared_volume:/shared_volume
+    build:
+      dockerfile: Dockerfile-frontend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.multivol.rule=Host(`multivol.spook64.fr`)"
+      - "traefik.http.routers.multivol.tls=true"
+      - "traefik.http.routers.multivol.tls.certresolver=myresolver"
+      - "traefik.http.services.multivol.loadbalancer.server.scheme=http"
+      - "traefik.http.services.multivol.loadbalancer.server.port=8501"
+      - "traefik.http.routers.multivol.entrypoints=websecure"
+      - "traefik.http.routers.multivol.middlewares=authelia@file"
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    external: true
