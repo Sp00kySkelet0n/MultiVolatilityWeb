@@ -86,5 +86,8 @@ else:
     with col3:
         st.write("")
 
-
-st.logo(image=ICON_HEADER,size="large",link="https://multivol.spook64.fr/")
+full_url = os.getenv("FULL_URL")
+if full_url:
+    st.logo(image=ICON_HEADER,size="large",link=full_url)
+else:
+    st.logo(image=ICON_HEADER,size="large")

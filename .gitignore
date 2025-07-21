@@ -2,5 +2,6 @@
 shared_volume/*
 src-backend/__pycache__
 src-frontend/__pycache__
+module_pages/__pycache__
 src-frontend/backup
 src-frontend/Test
