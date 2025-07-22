@@ -7,7 +7,7 @@ import requests
 
 def discord_notification(dump_name,module_name):
     webhook_url = os.getenv("DISCORD_WEBHOOK_URL")
-    if not webhook_url:
+    if not webhook_url or webhook_url == "":
         return
     data = {
         "content": f"✅ Module {module_name} for {dump_name} is ready!",
